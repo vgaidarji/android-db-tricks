@@ -29,4 +29,5 @@ public interface DatabaseInterface {
     void open(Context context);
     void close();
     List<User> getUsers();
+    void addUsers(List<User> users);
 }

@@ -18,6 +18,7 @@ package com.donvigo.sqlitedatabase;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -25,9 +26,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.donvigo.databaseinterface.DatabaseInterface;
-import com.donvigo.databaseinterface.FakeUsers;
 import com.donvigo.databaseinterface.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -87,10 +88,6 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
                 ")";
 
         db.execSQL(CREATE_USERS_TABLE);
-
-        for (User user : FakeUsers.getUsers()) {
-            addUser(user);
-        }
     }
 
     @Override
@@ -126,6 +123,39 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
 
     @Override
     public List<User> getUsers() {
-        return null;
+        List<User> users = new ArrayList<>();
+        String query = String.format("SELECT * FROM %s", TABLE_USERS);
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery(query, null);
+        try {
+            if (c.moveToFirst()) {
+                do {
+                    User newUser = new User(
+                            c.getInt(c.getColumnIndex(KEY_USER_ID)),
+                            c.getString(c.getColumnIndex(KEY_USER_NAME)),
+                            c.getString(c.getColumnIndex(KEY_USER_ADDRESS)),
+                            c.getString(c.getColumnIndex(KEY_USER_SSN)),
+                            c.getString(c.getColumnIndex(KEY_USER_EMAIL)),
+                            c.getString(c.getColumnIndex(KEY_USER_HOME_PHONE)),
+                            c.getString(c.getColumnIndex(KEY_USER_WORK_PHONE))
+                    );
+                    users.add(newUser);
+                } while(c.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d("getUsers", "Error while trying to get users from database");
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+        }
+        return users;
+    }
+
+    @Override
+    public void addUsers(List<User> users) {
+        for (User user : users) {
+            addUser(user);
+        }
     }
 }

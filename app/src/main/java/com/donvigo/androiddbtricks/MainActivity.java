@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.donvigo.databaseinterface.DatabaseManager;
+import com.donvigo.databaseinterface.FakeUsers;
 import com.donvigo.databaseinterface.model.User;
 import com.donvigo.sqlitedatabase.SQLiteDatabaseImpl;
 
@@ -35,8 +36,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DatabaseManager.init(this, new SQLiteDatabaseImpl(this));
+        createAndOpenDatabase();
+        fillUsersTable();
         getUsersFromDB();
+    }
+
+    private void createAndOpenDatabase() {
+        DatabaseManager.init(this, new SQLiteDatabaseImpl(this));
+    }
+
+    private void fillUsersTable() {
+        DatabaseManager.getInstance().addUsers(FakeUsers.getUsers());
     }
 
     @Override

@@ -35,6 +35,7 @@ public class DatabaseManager implements DatabaseInterface {
 
     private DatabaseManager(Context context, DatabaseInterface databaseInterface) {
         this.context = context;
+        this.databaseInterface = databaseInterface;
     }
 
     public static synchronized DatabaseManager getInstance() {
@@ -88,5 +89,13 @@ public class DatabaseManager implements DatabaseInterface {
             throw new NullPointerException("databaseInterface can't be null");
         }
         return databaseInterface.getUsers();
+    }
+
+    @Override
+    public void addUsers(List<User> users) {
+        if(databaseInterface == null) {
+            throw new NullPointerException("databaseInterface can't be null");
+        }
+        databaseInterface.addUsers(users);
     }
 }
