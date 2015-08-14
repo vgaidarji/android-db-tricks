@@ -16,12 +16,16 @@
 
 package com.donvigo.sqlitedatabase;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.donvigo.databaseinterface.DatabaseInterface;
+import com.donvigo.databaseinterface.FakeUsers;
 import com.donvigo.databaseinterface.model.User;
 
 import java.util.List;
@@ -29,9 +33,9 @@ import java.util.List;
 /**
  * Created by vgaidarji on 8/14/15.
  */
-public class SQLiteDatabase extends SQLiteOpenHelper implements DatabaseInterface {
+public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInterface {
 
-    private static SQLiteDatabase database;
+    private static SQLiteDatabaseImpl database;
     private static final String DATABASE_NAME = "sqliteDB";
     private static final int DATABASE_VERSION = 1;
 
@@ -44,22 +48,22 @@ public class SQLiteDatabase extends SQLiteOpenHelper implements DatabaseInterfac
     private static final String KEY_USER_HOME_PHONE = "homePhone";
     private static final String KEY_USER_WORK_PHONE = "workPhone";
 
-    public SQLiteDatabase(Context context) {
+    public SQLiteDatabaseImpl(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public SQLiteDatabase(Context context, String name, CursorFactory factory, int version) {
+    public SQLiteDatabaseImpl(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
-    public SQLiteDatabase(Context context, String name, CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
+    public SQLiteDatabaseImpl(Context context, String name, CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super(context, name, factory, version, errorHandler);
     }
 
     @Override
     public void open(Context context) {
         if (database == null) {
-            database = new SQLiteDatabase(context.getApplicationContext());
+            database = new SQLiteDatabaseImpl(context.getApplicationContext());
         }
         getWritableDatabase();
     }
@@ -83,6 +87,10 @@ public class SQLiteDatabase extends SQLiteOpenHelper implements DatabaseInterfac
                 ")";
 
         db.execSQL(CREATE_USERS_TABLE);
+
+        for (User user : FakeUsers.getUsers()) {
+            addUser(user);
+        }
     }
 
     @Override
@@ -91,6 +99,28 @@ public class SQLiteDatabase extends SQLiteOpenHelper implements DatabaseInterfac
             // Simplest implementation is to drop all old tables and recreate them
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
             onCreate(db);
+        }
+    }
+
+    public void addUser(User user) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_USER_ID, user.getId());
+            values.put(KEY_USER_NAME, user.getName());
+            values.put(KEY_USER_ADDRESS, user.getAddress());
+            values.put(KEY_USER_SSN, user.getSsn());
+            values.put(KEY_USER_EMAIL, user.getEmail());
+            values.put(KEY_USER_HOME_PHONE, user.getHomePhone());
+            values.put(KEY_USER_WORK_PHONE, user.getWorkPhone());
+
+            db.insertOrThrow(TABLE_USERS, null, values);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d("addUser", "Error while trying to add post to database");
+        } finally {
+            db.endTransaction();
         }
     }
 
