@@ -18,6 +18,8 @@ package com.donvigo.databaseinterface;
 
 import android.content.Context;
 
+import com.donvigo.databaseinterface.model.User;
+
 import java.util.List;
 
 /**

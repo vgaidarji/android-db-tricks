@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
+package com.donvigo.databaseinterface.model;
 
 /**
  * Created by vgaidarji on 8/14/15.

@@ -22,7 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.donvigo.databaseinterface.DatabaseManager;
-import com.donvigo.databaseinterface.User;
+import com.donvigo.databaseinterface.model.User;
 
 import java.util.List;
 

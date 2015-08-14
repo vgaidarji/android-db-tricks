@@ -1,1 +1,1 @@
-include ':app', ':databaseinterface', ':DatabaseInterface'
+include ':app', ':databaseinterface', ':DatabaseInterface', ':SQLiteDatabase'

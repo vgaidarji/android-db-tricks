@@ -14,19 +14,16 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
+package com.donvigo.sqlitedatabase;
 
-import android.content.Context;
-
-import com.donvigo.databaseinterface.model.User;
-
-import java.util.List;
+import android.app.Application;
+import android.test.ApplicationTestCase;
 
 /**
- * Created by vgaidarji on 8/14/15.
+ * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-public interface DatabaseInterface {
-    void open(Context context);
-    void close();
-    List<User> getUsers();
+public class ApplicationTest extends ApplicationTestCase<Application> {
+    public ApplicationTest() {
+        super(Application.class);
+    }
 }

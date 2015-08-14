@@ -14,19 +14,27 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
+apply plugin: 'com.android.library'
 
-import android.content.Context;
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
-import com.donvigo.databaseinterface.model.User;
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
 
-import java.util.List;
-
-/**
- * Created by vgaidarji on 8/14/15.
- */
-public interface DatabaseInterface {
-    void open(Context context);
-    void close();
-    List<User> getUsers();
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.1'
 }
