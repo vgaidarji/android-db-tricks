@@ -14,20 +14,13 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
+package com.donvigo.ormlitedatabase.migration;
 
-import android.content.Context;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 
-import com.donvigo.databaseinterface.model.UserModel;
+import com.j256.ormlite.support.ConnectionSource;
 
-import java.util.List;
-
-/**
- * Created by vgaidarji on 8/14/15.
- */
-public interface DatabaseInterface {
-    void open(Context context);
-    void close();
-    List<UserModel> getUsers();
-    void addUsers(List<UserModel> users);
+abstract public class Migration {
+    abstract public void migrate(SQLiteDatabase db, ConnectionSource src) throws SQLException;
 }

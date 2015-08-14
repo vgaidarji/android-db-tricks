@@ -14,20 +14,24 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
-
-import android.content.Context;
-
-import com.donvigo.databaseinterface.model.UserModel;
-
-import java.util.List;
+package com.donvigo.databaseinterface.model;
 
 /**
  * Created by vgaidarji on 8/14/15.
  */
-public interface DatabaseInterface {
-    void open(Context context);
-    void close();
-    List<UserModel> getUsers();
-    void addUsers(List<UserModel> users);
+public interface UserModel {
+    int getId();
+    String getName();
+    String getAddress();
+    String getSsn();
+    String getEmail();
+    String getHomePhone();
+    String getWorkPhone();
+    void setId(int id);
+    void setName(String name);
+    void setAddress(String address);
+    void setSsn(String ssn);
+    void setEmail(String email);
+    void setHomePhone(String homePhone);
+    void setWorkPhone(String workPhone);
 }

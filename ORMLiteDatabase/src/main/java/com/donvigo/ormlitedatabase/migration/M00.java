@@ -14,20 +14,26 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
+package com.donvigo.ormlitedatabase.migration;
 
-import android.content.Context;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 
-import com.donvigo.databaseinterface.model.UserModel;
-
-import java.util.List;
+import com.j256.ormlite.support.ConnectionSource;
 
 /**
- * Created by vgaidarji on 8/14/15.
+ * Creates tables in empty database.
  */
-public interface DatabaseInterface {
-    void open(Context context);
-    void close();
-    List<UserModel> getUsers();
-    void addUsers(List<UserModel> users);
+public class M00 extends Migration {
+    @Override
+    public void migrate(SQLiteDatabase db, ConnectionSource src)
+            throws SQLException {
+        createTables(src);
+    }
+
+    private void createTables(ConnectionSource connectionSource) {
+    }
+
+    private void dropTables(ConnectionSource connectionSource) {
+    }
 }

@@ -18,9 +18,10 @@ package com.donvigo.databaseinterface;
 
 import android.content.Context;
 
-import com.donvigo.databaseinterface.model.User;
+import com.donvigo.databaseinterface.model.UserModel;
 
 import java.util.List;
+
 
 /**
  * Created by vgaidarji on 8/14/15.
@@ -84,7 +85,7 @@ public class DatabaseManager implements DatabaseInterface {
      * @return
      */
     @Override
-    public List<User> getUsers() {
+    public List<UserModel> getUsers() {
         if(databaseInterface == null) {
             throw new NullPointerException("databaseInterface can't be null");
         }
@@ -92,7 +93,7 @@ public class DatabaseManager implements DatabaseInterface {
     }
 
     @Override
-    public void addUsers(List<User> users) {
+    public void addUsers(List<UserModel> users) {
         if(databaseInterface == null) {
             throw new NullPointerException("databaseInterface can't be null");
         }

@@ -14,20 +14,12 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
+package com.donvigo.ormlitedatabase;
 
-import android.content.Context;
+import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
 
-import com.donvigo.databaseinterface.model.UserModel;
-
-import java.util.List;
-
-/**
- * Created by vgaidarji on 8/14/15.
- */
-public interface DatabaseInterface {
-    void open(Context context);
-    void close();
-    List<UserModel> getUsers();
-    void addUsers(List<UserModel> users);
+public class DatabaseConfigUtil extends OrmLiteConfigUtil {
+    public static void main(String[] args) throws Exception {
+        writeConfigFile("ormlite_config.txt");
+    }
 }

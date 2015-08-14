@@ -26,7 +26,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.donvigo.databaseinterface.DatabaseInterface;
-import com.donvigo.databaseinterface.model.User;
+import com.donvigo.sqlitedatabase.model.User;
+import com.donvigo.databaseinterface.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +100,7 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
         }
     }
 
-    public void addUser(User user) {
+    public void addUser(UserModel user) {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
@@ -122,15 +123,15 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
     }
 
     @Override
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<>();
+    public List<UserModel> getUsers() {
+        List<UserModel> users = new ArrayList<>();
         String query = String.format("SELECT * FROM %s", TABLE_USERS);
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
         try {
             if (c.moveToFirst()) {
                 do {
-                    User newUser = new User(
+                    UserModel newUser = new User(
                             c.getInt(c.getColumnIndex(KEY_USER_ID)),
                             c.getString(c.getColumnIndex(KEY_USER_NAME)),
                             c.getString(c.getColumnIndex(KEY_USER_ADDRESS)),
@@ -153,8 +154,8 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
     }
 
     @Override
-    public void addUsers(List<User> users) {
-        for (User user : users) {
+    public void addUsers(List<UserModel> users) {
+        for (UserModel user : users) {
             addUser(user);
         }
     }

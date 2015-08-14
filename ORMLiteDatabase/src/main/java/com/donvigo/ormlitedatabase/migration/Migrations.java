@@ -14,20 +14,10 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
+package com.donvigo.ormlitedatabase.migration;
 
-import android.content.Context;
-
-import com.donvigo.databaseinterface.model.UserModel;
-
-import java.util.List;
-
-/**
- * Created by vgaidarji on 8/14/15.
- */
-public interface DatabaseInterface {
-    void open(Context context);
-    void close();
-    List<UserModel> getUsers();
-    void addUsers(List<UserModel> users);
+public class Migrations {
+    public static final Migration[] MIGRATION_ARRAY = new Migration[]{
+            new M00()
+    };
 }

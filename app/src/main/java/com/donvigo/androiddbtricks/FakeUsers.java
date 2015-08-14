@@ -14,20 +14,31 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
-
-import android.content.Context;
+package com.donvigo.androiddbtricks;
 
 import com.donvigo.databaseinterface.model.UserModel;
+import com.donvigo.sqlitedatabase.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by vgaidarji on 8/14/15.
  */
-public interface DatabaseInterface {
-    void open(Context context);
-    void close();
-    List<UserModel> getUsers();
-    void addUsers(List<UserModel> users);
+public class FakeUsers {
+    public static List<UserModel> getUsers() {
+        List<UserModel> users = new ArrayList<>();
+        for(int i = 0; i < 10; i++) {
+            users.add(new User(
+                    i,
+                    "name " + i,
+                    "address " + i,
+                    "ssn " + i,
+                    "email " + i,
+                    "000000" + i,
+                    "111111" + i
+            ));
+        }
+        return users;
+    }
 }

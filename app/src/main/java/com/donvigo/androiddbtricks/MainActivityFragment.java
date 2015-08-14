@@ -16,16 +16,32 @@
  */
 package com.donvigo.androiddbtricks;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.donvigo.databaseinterface.DatabaseInterface;
+import com.donvigo.databaseinterface.DatabaseManager;
+import com.donvigo.databaseinterface.model.UserModel;
+import com.donvigo.sqlitedatabase.SQLiteDatabaseImpl;
+
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
+
+    @InjectView(R.id.textViewDBName)
+    TextView textViewDBName;
+
+    List<UserModel> users;
 
     public MainActivityFragment() {
     }
@@ -33,6 +49,37 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        ButterKnife.inject(this, view);
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        createAndOpenDatabase();
+        fillUsersTable();
+        getUsersFromDB();
+    }
+
+    private void createAndOpenDatabase() {
+        DatabaseInterface dbInterface = new SQLiteDatabaseImpl(getActivity());
+        DatabaseManager.init(getActivity(), dbInterface);
+        textViewDBName.setText(dbInterface.getClass().getSimpleName());
+    }
+
+    private void fillUsersTable() {
+        DatabaseManager.getInstance().addUsers(FakeUsers.getUsers());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        DatabaseManager.getInstance().close();
+    }
+
+    private void getUsersFromDB() {
+        users = DatabaseManager.getInstance().getUsers();
     }
 }

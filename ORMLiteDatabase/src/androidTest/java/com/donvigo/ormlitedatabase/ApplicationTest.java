@@ -14,30 +14,16 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface;
+package com.donvigo.ormlitedatabase;
 
-import com.donvigo.databaseinterface.model.User;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.app.Application;
+import android.test.ApplicationTestCase;
 
 /**
- * Created by vgaidarji on 8/14/15.
+ * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-public class FakeUsers {
-    public static List<User> getUsers() {
-        List<User> users = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
-            users.add(new User(
-                    i,
-                    "name " + i,
-                    "address " + i,
-                    "ssn " + i,
-                    "email " + i,
-                    "000000" + i,
-                    "111111" + i
-            ));
-        }
-        return users;
+public class ApplicationTest extends ApplicationTestCase<Application> {
+    public ApplicationTest() {
+        super(Application.class);
     }
 }

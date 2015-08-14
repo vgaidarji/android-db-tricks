@@ -14,12 +14,14 @@
  *    limitations under the License.
  */
 
-package com.donvigo.databaseinterface.model;
+package com.donvigo.sqlitedatabase.model;
+
+import com.donvigo.databaseinterface.model.UserModel;
 
 /**
  * Created by vgaidarji on 8/14/15.
  */
-public class User {
+public class User implements UserModel {
     private int id;
     private String name;
     private String address;
