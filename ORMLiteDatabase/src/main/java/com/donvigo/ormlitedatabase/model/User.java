@@ -17,18 +17,32 @@
 package com.donvigo.ormlitedatabase.model;
 
 import com.donvigo.databaseinterface.model.UserModel;
+import com.donvigo.ormlitedatabase.UserDAO;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Created by vgaidarji on 8/14/15.
  */
+@DatabaseTable(tableName = "users", daoClass = UserDAO.class)
 public class User implements UserModel {
+    @DatabaseField(generatedId = true)
     private int id;
+    @DatabaseField()
     private String name;
+    @DatabaseField()
     private String address;
+    @DatabaseField()
     private String ssn;
+    @DatabaseField()
     private String email;
+    @DatabaseField()
     private String homePhone;
+    @DatabaseField()
     private String workPhone;
+
+    public User() {
+    }
 
     public User(int id, String name, String address, String ssn,
                 String email, String homePhone, String workPhone) {

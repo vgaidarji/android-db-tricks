@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.donvigo.databaseinterface.DatabaseInterface;
 import com.donvigo.databaseinterface.DatabaseManager;
 import com.donvigo.databaseinterface.model.UserModel;
-import com.donvigo.sqlitedatabase.SQLiteDatabaseImpl;
+import com.donvigo.ormlitedatabase.OrmLiteDatabase;
 
 import java.util.List;
 
@@ -40,8 +40,8 @@ public class MainActivityFragment extends Fragment {
 
     @InjectView(R.id.textViewDBName)
     TextView textViewDBName;
-
     List<UserModel> users;
+    DatabaseInterface database;
 
     public MainActivityFragment() {
     }
@@ -61,12 +61,18 @@ public class MainActivityFragment extends Fragment {
         createAndOpenDatabase();
         fillUsersTable();
         getUsersFromDB();
+        updateText();
+    }
+
+    private void updateText() {
+        textViewDBName.setText(String.format("%s, items in DB: %d",
+                database.getClass().getSimpleName(), users.size()));
     }
 
     private void createAndOpenDatabase() {
-        DatabaseInterface dbInterface = new SQLiteDatabaseImpl(getActivity());
-        DatabaseManager.init(getActivity(), dbInterface);
-        textViewDBName.setText(dbInterface.getClass().getSimpleName());
+//        database = new SQLiteDatabaseImpl(getActivity());
+        database = new OrmLiteDatabase(getActivity());
+        DatabaseManager.init(getActivity(), database);
     }
 
     private void fillUsersTable() {

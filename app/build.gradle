@@ -26,5 +26,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile project(':DatabaseInterface')
     compile project(':SQLiteDatabase')
+    compile project(':ORMLiteDatabase')
     compile 'com.jakewharton:butterknife:5.1.1'
 }

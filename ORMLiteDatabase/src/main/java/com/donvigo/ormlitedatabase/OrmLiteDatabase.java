@@ -23,9 +23,12 @@ import com.donvigo.databaseinterface.DatabaseInterface;
 import com.donvigo.databaseinterface.model.UserModel;
 import com.donvigo.ormlitedatabase.migration.Migration;
 import com.donvigo.ormlitedatabase.migration.Migrations;
+import com.donvigo.ormlitedatabase.model.User;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,16 +36,17 @@ import java.util.List;
  */
 public class OrmLiteDatabase extends OrmLiteSqliteOpenHelper implements DatabaseInterface {
 
-    private final int databaseVersion;
+    private static final String DATABASE_NAME = "ormliteDB";
+    private static final int DATABASE_VERSION = 1;
+    private UserDAO userDAO;
 
-    public OrmLiteDatabase(Context context, String databaseName, int databaseVersion) {
-        super(context, databaseName, null, databaseVersion);
-        this.databaseVersion = databaseVersion;
+    public OrmLiteDatabase(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
-        onUpgrade(db, connectionSource, 0, databaseVersion);
+        onUpgrade(db, connectionSource, 0, DATABASE_VERSION);
     }
 
     @Override
@@ -58,16 +62,40 @@ public class OrmLiteDatabase extends OrmLiteSqliteOpenHelper implements Database
 
     @Override
     public void open(Context context) {
-
     }
 
     @Override
     public List<UserModel> getUsers() {
-        return null;
+        return getUserDAO().getUserModels();
     }
 
     @Override
-    public void addUsers(List<UserModel> users) {
-
+    public void addUsers(List<UserModel> userModels) {
+        List<User> users = new ArrayList<>();
+        for (UserModel u :
+                userModels) {
+            users.add(new User(
+                    u.getId(),
+                    u.getName(),
+                    u.getAddress(),
+                    u.getSsn(),
+                    u.getEmail(),
+                    u.getHomePhone(),
+                    u.getWorkPhone()
+            ));
+        }
+        getUserDAO().addUsers(users);
     }
+
+    public UserDAO getUserDAO() {
+        if(userDAO == null) {
+            try {
+                userDAO = getDao(User.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return userDAO;
+    }
+
 }

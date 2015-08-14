@@ -19,7 +19,9 @@ package com.donvigo.ormlitedatabase.migration;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.donvigo.ormlitedatabase.model.User;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 /**
  * Creates tables in empty database.
@@ -32,6 +34,11 @@ public class M00 extends Migration {
     }
 
     private void createTables(ConnectionSource connectionSource) {
+        try {
+            TableUtils.createTableIfNotExists(connectionSource, User.class);
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void dropTables(ConnectionSource connectionSource) {
