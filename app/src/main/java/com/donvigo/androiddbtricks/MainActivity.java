@@ -16,17 +16,36 @@
  */
 package com.donvigo.androiddbtricks;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.donvigo.databaseinterface.DatabaseManager;
+import com.donvigo.databaseinterface.User;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    List<User> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DatabaseManager.init(this, null);
+        getUsersFromDB();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DatabaseManager.getInstance().close();
+    }
+
+    private void getUsersFromDB() {
+        users = DatabaseManager.getInstance().getUsers();
     }
 
 

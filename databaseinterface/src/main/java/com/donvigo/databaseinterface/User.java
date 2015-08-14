@@ -19,7 +19,7 @@ package com.donvigo.databaseinterface;
 /**
  * Created by vgaidarji on 8/14/15.
  */
-public class Person {
+public class User {
     private String name;
     private String address;
     private String ssn;
@@ -27,8 +27,8 @@ public class Person {
     private String homePhone;
     private String workPhone;
 
-    public Person(String name, String address, String ssn,
-                  String email, String homePhone, String workPhone) {
+    public User(String name, String address, String ssn,
+                String email, String homePhone, String workPhone) {
         this.name = name;
         this.address = address;
         this.ssn = ssn;
@@ -71,7 +71,7 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Person person = (Person) o;
+        User person = (User) o;
 
         if (name != null ? !name.equals(person.name) : person.name != null) return false;
         if (address != null ? !address.equals(person.address) : person.address != null)
@@ -97,7 +97,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "User{" +
                 "name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", ssn='" + ssn + '\'' +
