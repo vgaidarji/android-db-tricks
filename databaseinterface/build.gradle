@@ -1,13 +1,10 @@
-apply plugin: 'com.android.application'
-// This does not break the build when Android Studio is missing the JRebel for Android plugin.
-apply plugin: 'com.zeroturnaround.jrebel.android'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.donvigo.androiddbtricks"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
@@ -24,8 +21,4 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
-    compile project(':DatabaseInterface')
-    compile project(':SQLiteDatabase')
-    compile project(':ORMLiteDatabase')
-    compile 'com.jakewharton:butterknife:5.1.1'
 }
