@@ -20,7 +20,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.donvigo.databaseinterface.DatabaseInterface;
 import com.donvigo.databaseinterface.DatabaseManager;
 import com.donvigo.databaseinterface.FakeUsers;
 import com.donvigo.databaseinterface.model.User;
@@ -28,7 +30,13 @@ import com.donvigo.sqlitedatabase.SQLiteDatabaseImpl;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class MainActivity extends AppCompatActivity {
+
+    @InjectView(R.id.textViewDBName)
+    TextView textViewDBName;
 
     List<User> users;
 
@@ -36,13 +44,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
         createAndOpenDatabase();
         fillUsersTable();
         getUsersFromDB();
     }
 
     private void createAndOpenDatabase() {
-        DatabaseManager.init(this, new SQLiteDatabaseImpl(this));
+        DatabaseInterface dbInterface = new SQLiteDatabaseImpl(this);
+        DatabaseManager.init(this, dbInterface);
+        textViewDBName.setText(dbInterface.getClass().getSimpleName());
     }
 
     private void fillUsersTable() {
