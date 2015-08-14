@@ -20,6 +20,7 @@ package com.donvigo.databaseinterface.model;
  * Created by vgaidarji on 8/14/15.
  */
 public class User {
+    private int id;
     private String name;
     private String address;
     private String ssn;
@@ -27,14 +28,19 @@ public class User {
     private String homePhone;
     private String workPhone;
 
-    public User(String name, String address, String ssn,
+    public User(int id, String name, String address, String ssn,
                 String email, String homePhone, String workPhone) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.ssn = ssn;
         this.email = email;
         this.homePhone = homePhone;
         this.workPhone = workPhone;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() { return name; }
@@ -48,6 +54,10 @@ public class User {
     public String getHomePhone() { return homePhone; }
 
     public String getWorkPhone() { return workPhone; }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setName(String name) { this.name = name; }
 
@@ -71,22 +81,23 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User person = (User) o;
+        User user = (User) o;
 
-        if (name != null ? !name.equals(person.name) : person.name != null) return false;
-        if (address != null ? !address.equals(person.address) : person.address != null)
+        if (id != user.id) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (address != null ? !address.equals(user.address) : user.address != null) return false;
+        if (ssn != null ? !ssn.equals(user.ssn) : user.ssn != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (homePhone != null ? !homePhone.equals(user.homePhone) : user.homePhone != null)
             return false;
-        if (ssn != null ? !ssn.equals(person.ssn) : person.ssn != null) return false;
-        if (email != null ? !email.equals(person.email) : person.email != null) return false;
-        if (homePhone != null ? !homePhone.equals(person.homePhone) : person.homePhone != null)
-            return false;
-        return !(workPhone != null ? !workPhone.equals(person.workPhone) : person.workPhone != null);
+        return !(workPhone != null ? !workPhone.equals(user.workPhone) : user.workPhone != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (ssn != null ? ssn.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
@@ -98,7 +109,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", ssn='" + ssn + '\'' +
                 ", email='" + email + '\'' +
