@@ -26,12 +26,12 @@ import java.util.List;
  * Created by vgaidarji on 8/14/15.
  */
 public class FakeUsers {
-    public static List<UserModel> getUsers() {
+    public static List<UserModel> getUsers(String dbName) {
         List<UserModel> users = new ArrayList<>();
         for(int i = 0; i < 10; i++) {
             users.add(new User(
                     i,
-                    "name " + i,
+                    dbName + " #" + i,
                     "address " + i,
                     "ssn " + i,
                     "email " + i,
