@@ -26,7 +26,7 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "users", daoClass = UserDAO.class)
 public class User implements UserModel {
-    @DatabaseField(generatedId = true)
+    @DatabaseField(id = true)
     private int id;
     @DatabaseField()
     private String name;

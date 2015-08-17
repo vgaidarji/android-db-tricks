@@ -18,6 +18,8 @@ package com.donvigo.androiddbtricks;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +47,11 @@ public class MainActivityFragment extends Fragment {
 
     @InjectView(R.id.textViewDBName)
     TextView textViewDBName;
+    @InjectView(R.id.recyclerViewItems)
+    RecyclerView rv;
+    private RecyclerView.Adapter rvAdapter;
+    private RecyclerView.LayoutManager rvLayoutManager;
+
     List<UserModel> users;
     DatabaseInterface database;
 
@@ -86,6 +93,22 @@ public class MainActivityFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        ButterKnife.inject(this, view);
+        setupRecyclerView();
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        changeDatabase(DatabaseName.SQLite);
+    }
+
     /**
      * Changes database to specified one. Default: RealmDatabase.
      * @param dbName
@@ -106,30 +129,35 @@ public class MainActivityFragment extends Fragment {
                 database = new SQLiteDatabaseImpl(getActivity());
         }
         setupDatabase();
-        updateText();
+        updateUI();
     }
 
     private synchronized void closeDatabase() {
         if(database != null) {
+            DatabaseManager.getInstance().close();
             database.close();
+            database = null;
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.inject(this, view);
-
-        return view;
+    private void fillRecyclerView(final List<UserModel> users) {
+        rv.setAdapter(null);
+        rvAdapter = new RecyclerViewAdapter(users);
+        rv.setAdapter(rvAdapter);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        changeDatabase(DatabaseName.SQLite);
-        setupDatabase();
+    private void setupRecyclerView() {
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        rv.setHasFixedSize(true);
+
+        rvLayoutManager = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(rvLayoutManager);
+    }
+
+    private void updateUI() {
         updateText();
+        fillRecyclerView(users);
     }
 
     private void setupDatabase() {
@@ -148,7 +176,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void fillUsersTable() {
-        DatabaseManager.getInstance().addUsers(FakeUsers.getUsers());
+        DatabaseManager.getInstance().addUsers(FakeUsers.getUsers(database.getClass().getSimpleName()));
     }
 
     @Override
