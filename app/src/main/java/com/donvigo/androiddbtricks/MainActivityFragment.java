@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.donvigo.databaseinterface.DatabaseInterface;
 import com.donvigo.databaseinterface.DatabaseManager;
 import com.donvigo.databaseinterface.model.UserModel;
-import com.donvigo.ormlitedatabase.OrmLiteDatabase;
+import com.donvigo.realmdatabase.RealmDatabase;
 
 import java.util.List;
 
@@ -71,7 +71,8 @@ public class MainActivityFragment extends Fragment {
 
     private void createAndOpenDatabase() {
 //        database = new SQLiteDatabaseImpl(getActivity());
-        database = new OrmLiteDatabase(getActivity());
+//        database = new OrmLiteDatabase(getActivity());
+        database = new RealmDatabase();
         DatabaseManager.init(getActivity(), database);
     }
 
