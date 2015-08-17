@@ -29,7 +29,9 @@ import android.widget.TextView;
 import com.donvigo.databaseinterface.DatabaseInterface;
 import com.donvigo.databaseinterface.DatabaseManager;
 import com.donvigo.databaseinterface.model.UserModel;
+import com.donvigo.ormlitedatabase.OrmLiteDatabase;
 import com.donvigo.realmdatabase.RealmDatabase;
+import com.donvigo.sqlitedatabase.SQLiteDatabaseImpl;
 
 import java.util.List;
 
@@ -45,6 +47,10 @@ public class MainActivityFragment extends Fragment {
     TextView textViewDBName;
     List<UserModel> users;
     DatabaseInterface database;
+
+    enum DatabaseName {
+        SQLite, OrmLite, Realm
+    }
 
     public MainActivityFragment() {
     }
@@ -65,16 +71,48 @@ public class MainActivityFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sqlite:
+                changeDatabase(DatabaseName.SQLite);
                 return true;
             case R.id.action_ormlite:
+                changeDatabase(DatabaseName.OrmLite);
                 return true;
             case R.id.action_realm:
+                changeDatabase(DatabaseName.Realm);
                 return true;
             case R.id.action_settings:
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Changes database to specified one. Default: RealmDatabase.
+     * @param dbName
+     */
+    private void changeDatabase(DatabaseName dbName) {
+        closeDatabase();
+        switch (dbName) {
+            case SQLite:
+                database = new SQLiteDatabaseImpl(getActivity());
+                break;
+            case OrmLite:
+                database = new OrmLiteDatabase(getActivity());
+                break;
+            case Realm:
+                database = new RealmDatabase();
+                break;
+            default:
+                database = new SQLiteDatabaseImpl(getActivity());
+        }
+        setupDatabase();
+        updateText();
+    }
+
+    private synchronized void closeDatabase() {
+        if(database != null) {
+            database.close();
+        }
     }
 
     @Override
@@ -89,10 +127,15 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        changeDatabase(DatabaseName.SQLite);
+        setupDatabase();
+        updateText();
+    }
+
+    private void setupDatabase() {
         createAndOpenDatabase();
         fillUsersTable();
         getUsersFromDB();
-        updateText();
     }
 
     private void updateText() {
@@ -101,9 +144,6 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void createAndOpenDatabase() {
-//        database = new SQLiteDatabaseImpl(getActivity());
-//        database = new OrmLiteDatabase(getActivity());
-        database = new RealmDatabase();
         DatabaseManager.init(getActivity(), database);
     }
 

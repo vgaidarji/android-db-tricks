@@ -51,6 +51,9 @@ public class RealmDatabase implements DatabaseInterface {
 
     @Override
     public void close() {
+        if(realm == null) {
+            return;
+        }
         realm.close();
     }
 
