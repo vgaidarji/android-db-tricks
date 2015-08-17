@@ -19,11 +19,13 @@ package com.donvigo.realmdatabase.model;
 import com.donvigo.databaseinterface.model.UserModel;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by vgaidarji on 8/14/15.
  */
 public class User extends RealmObject implements UserModel {
+    @PrimaryKey
     private int id;
     private String name;
     private String address;
