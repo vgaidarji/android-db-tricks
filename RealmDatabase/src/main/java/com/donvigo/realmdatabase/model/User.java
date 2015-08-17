@@ -32,17 +32,8 @@ public class User extends RealmObject implements UserModel {
     private String homePhone;
     private String workPhone;
 
-    public User(int id, String name, String address, String ssn,
-                String email, String homePhone, String workPhone) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.ssn = ssn;
-        this.email = email;
-        this.homePhone = homePhone;
-        this.workPhone = workPhone;
+    public User() {
     }
-
 
     // The standard getters and setters your IDE generates are fine.
     // Realm will overload them and code inside them is ignored.
@@ -85,46 +76,6 @@ public class User extends RealmObject implements UserModel {
         this.workPhone = workPhone;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (id != user.id) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (address != null ? !address.equals(user.address) : user.address != null) return false;
-        if (ssn != null ? !ssn.equals(user.ssn) : user.ssn != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (homePhone != null ? !homePhone.equals(user.homePhone) : user.homePhone != null)
-            return false;
-        return !(workPhone != null ? !workPhone.equals(user.workPhone) : user.workPhone != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (ssn != null ? ssn.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (homePhone != null ? homePhone.hashCode() : 0);
-        result = 31 * result + (workPhone != null ? workPhone.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", ssn='" + ssn + '\'' +
-                ", email='" + email + '\'' +
-                ", homePhone='" + homePhone + '\'' +
-                ", workPhone='" + workPhone + '\'' +
-                '}';
-    }
+    // Only getters and setters should be defined in model classes
+    // It means that we can't add toString(), hashCode(), equals() methods
 }
