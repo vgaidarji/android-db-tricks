@@ -30,4 +30,6 @@ public interface DatabaseInterface {
     void close();
     List<UserModel> getUsers();
     void addUsers(List<UserModel> users);
+    boolean isEncrypted();
+    void setDatabasePassword(String dbPassword);
 }

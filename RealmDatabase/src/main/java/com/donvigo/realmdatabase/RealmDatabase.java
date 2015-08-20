@@ -92,4 +92,13 @@ public class RealmDatabase implements DatabaseInterface {
             }
         });
     }
+
+    @Override
+    public boolean isEncrypted() {
+        return false;
+    }
+
+    @Override
+    public void setDatabasePassword(String dbPassword) {
+    }
 }

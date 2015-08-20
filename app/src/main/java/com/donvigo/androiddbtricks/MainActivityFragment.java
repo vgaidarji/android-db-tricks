@@ -26,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.donvigo.databaseinterface.DatabaseInterface;
@@ -34,6 +35,9 @@ import com.donvigo.databaseinterface.model.UserModel;
 import com.donvigo.ormlitedatabase.OrmLiteDatabase;
 import com.donvigo.realmdatabase.RealmDatabase;
 import com.donvigo.sqlitedatabase.SQLiteDatabaseImpl;
+import com.donvigo.sqlitedatabase.SQLiteDatabaseWithChiper;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.List;
 
@@ -49,6 +53,8 @@ public class MainActivityFragment extends Fragment {
     TextView textViewDBName;
     @InjectView(R.id.recyclerViewItems)
     RecyclerView rv;
+    @InjectView(R.id.editTextDBPassword)
+    EditText editTextDBPassword;
     private RecyclerView.Adapter rvAdapter;
     private RecyclerView.LayoutManager rvLayoutManager;
 
@@ -56,7 +62,7 @@ public class MainActivityFragment extends Fragment {
     DatabaseInterface database;
 
     enum DatabaseName {
-        SQLite, OrmLite, Realm
+        SQLite, OrmLite, Realm, SQLiteWithChiper
     }
 
     public MainActivityFragment() {
@@ -86,7 +92,8 @@ public class MainActivityFragment extends Fragment {
             case R.id.action_realm:
                 changeDatabase(DatabaseName.Realm);
                 return true;
-            case R.id.action_settings:
+            case R.id.action_sqlite_with_chiper:
+                changeDatabase(DatabaseName.SQLiteWithChiper);
                 return true;
         }
 
@@ -124,6 +131,12 @@ public class MainActivityFragment extends Fragment {
                 break;
             case Realm:
                 database = new RealmDatabase();
+                break;
+            case SQLiteWithChiper:
+                // This must be called before any call the SQLCipher classes (only one call)
+                SQLiteDatabase.loadLibs(getActivity());
+                database = new SQLiteDatabaseWithChiper(getActivity());
+                database.setDatabasePassword(editTextDBPassword.getText().toString());
                 break;
             default:
                 database = new SQLiteDatabaseImpl(getActivity());
