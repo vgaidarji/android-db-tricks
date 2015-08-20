@@ -62,7 +62,7 @@ public class MainActivityFragment extends Fragment {
     DatabaseInterface database;
 
     enum DatabaseName {
-        SQLite, OrmLite, Realm, SQLiteWithChiper
+        SQLite, OrmLite, Realm, SQLiteWithChiper, RealmEncrypted
     }
 
     public MainActivityFragment() {
@@ -94,6 +94,9 @@ public class MainActivityFragment extends Fragment {
                 return true;
             case R.id.action_sqlite_with_chiper:
                 changeDatabase(DatabaseName.SQLiteWithChiper);
+                return true;
+            case R.id.action_realm_encrypted:
+                changeDatabase(DatabaseName.RealmEncrypted);
                 return true;
         }
 
@@ -131,11 +134,16 @@ public class MainActivityFragment extends Fragment {
                 break;
             case Realm:
                 database = new RealmDatabase();
+                database.setDatabasePassword(null);
                 break;
             case SQLiteWithChiper:
                 // This must be called before any call the SQLCipher classes (only one call)
                 SQLiteDatabase.loadLibs(getActivity());
                 database = new SQLiteDatabaseWithChiper(getActivity());
+                database.setDatabasePassword(editTextDBPassword.getText().toString());
+                break;
+            case RealmEncrypted:
+                database = new RealmDatabase();
                 database.setDatabasePassword(editTextDBPassword.getText().toString());
                 break;
             default:

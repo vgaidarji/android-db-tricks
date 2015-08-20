@@ -37,16 +37,42 @@ import io.realm.exceptions.RealmException;
  */
 public class RealmDatabase implements DatabaseInterface {
     private Realm realm;
+    private String dbPassword = null;
+    private boolean isEncrypted = false;
 
     @Override
     public void open(Context context) {
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(context)
-                .name("realmDB")
-                .schemaVersion(0)
-                .deleteRealmIfMigrationNeeded()
-                .migration(new Migration())
-                .build();
-        realm = Realm.getInstance(realmConfiguration);
+        realm = Realm.getInstance(getRealmConfiguration(context));
+    }
+
+    private RealmConfiguration getRealmConfiguration(Context context) {
+        RealmConfiguration configuration;
+
+        if(isEncrypted) {
+            byte[] key = new byte[64];
+            byte[] passwordBytes = dbPassword.getBytes();
+            int keyLength = dbPassword.length() <= 64 ? dbPassword.length() : 64;
+            for(int i = 0; i < keyLength; i++) {
+                key[i] = passwordBytes[i];
+            }
+
+            configuration = new RealmConfiguration.Builder(context)
+                    .name("realmDB_encrypted")
+                    .schemaVersion(0)
+                    .encryptionKey(key)
+                    .deleteRealmIfMigrationNeeded()
+                    .migration(new Migration())
+                    .build();
+        }else {
+            configuration = new RealmConfiguration.Builder(context)
+                    .name("realmDB")
+                    .schemaVersion(0)
+                    .deleteRealmIfMigrationNeeded()
+                    .migration(new Migration())
+                    .build();
+        }
+
+        return configuration;
     }
 
     @Override
@@ -95,10 +121,12 @@ public class RealmDatabase implements DatabaseInterface {
 
     @Override
     public boolean isEncrypted() {
-        return false;
+        return isEncrypted;
     }
 
     @Override
     public void setDatabasePassword(String dbPassword) {
+        this.dbPassword = dbPassword;
+        isEncrypted = dbPassword != null;
     }
 }
