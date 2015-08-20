@@ -87,6 +87,15 @@ public class OrmLiteDatabase extends OrmLiteSqliteOpenHelper implements Database
         getUserDAO().addUsers(users);
     }
 
+    @Override
+    public boolean isEncrypted() {
+        return false;
+    }
+
+    @Override
+    public void setDatabasePassword(String dbPassword) {
+    }
+
     public UserDAO getUserDAO() {
         if(userDAO == null) {
             try {

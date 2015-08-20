@@ -18,14 +18,15 @@ package com.donvigo.sqlitedatabase;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.donvigo.databaseinterface.DatabaseInterface;
 import com.donvigo.databaseinterface.model.UserModel;
 import com.donvigo.sqlitedatabase.model.User;
+
+import net.sqlcipher.Cursor;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +34,10 @@ import java.util.List;
 /**
  * Created by vgaidarji on 8/14/15.
  */
-public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInterface {
+public class SQLiteDatabaseWithChiper extends SQLiteOpenHelper implements DatabaseInterface {
 
-    private static SQLiteDatabaseImpl database;
-    private static final String DATABASE_NAME = "sqliteDB";
+    private static SQLiteDatabaseWithChiper database;
+    private static final String DATABASE_NAME = "sqliteDB_withChiper";
     private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_USERS = "users";
@@ -48,16 +49,18 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
     private static final String KEY_USER_HOME_PHONE = "homePhone";
     private static final String KEY_USER_WORK_PHONE = "workPhone";
 
-    public SQLiteDatabaseImpl(Context context) {
+    private String dbPassword = null;
+
+    public SQLiteDatabaseWithChiper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void open(Context context) {
         if (database == null) {
-            database = new SQLiteDatabaseImpl(context.getApplicationContext());
+            database = new SQLiteDatabaseWithChiper(context.getApplicationContext());
         }
-        getWritableDatabase();
+        getWritableDatabase(dbPassword);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
     }
 
     @Override
-    public void onCreate(android.database.sqlite.SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db) {
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS +
                 "(" +
                 KEY_USER_ID + " INTEGER PRIMARY KEY," +
@@ -82,7 +85,7 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
     }
 
     @Override
-    public void onUpgrade(android.database.sqlite.SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion != newVersion) {
             // Simplest implementation is to drop all old tables and recreate them
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
@@ -91,7 +94,7 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
     }
 
     public void addUser(UserModel user) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase(dbPassword);
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
@@ -116,7 +119,7 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
     public List<UserModel> getUsers() {
         List<UserModel> users = new ArrayList<>();
         String query = String.format("SELECT * FROM %s", TABLE_USERS);
-        SQLiteDatabase db = getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase(dbPassword);
         Cursor c = db.rawQuery(query, null);
         try {
             if (c.moveToFirst()) {
@@ -152,10 +155,11 @@ public class SQLiteDatabaseImpl extends SQLiteOpenHelper implements DatabaseInte
 
     @Override
     public boolean isEncrypted() {
-        return false;
+        return true;
     }
 
     @Override
     public void setDatabasePassword(String dbPassword) {
+        this.dbPassword = dbPassword;
     }
 }

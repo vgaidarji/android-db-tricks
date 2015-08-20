@@ -14,4 +14,12 @@
             android:title="@string/action_realm"
             android:orderInCategory="100"
             app:showAsAction="never"/>
+      <item android:id="@+id/action_sqlite_with_chiper"
+            android:title="@string/action_sqlite_with_chiper"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+      <item android:id="@+id/action_realm_encrypted"
+            android:title="@string/action_realm_encrypted"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
 </menu>

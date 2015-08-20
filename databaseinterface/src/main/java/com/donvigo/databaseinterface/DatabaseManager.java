@@ -99,4 +99,20 @@ public class DatabaseManager implements DatabaseInterface {
         }
         databaseInterface.addUsers(users);
     }
+
+    @Override
+    public boolean isEncrypted() {
+        if(databaseInterface == null) {
+            throw new NullPointerException("databaseInterface can't be null");
+        }
+        return databaseInterface.isEncrypted();
+    }
+
+    @Override
+    public void setDatabasePassword(String dbPassword) {
+        if(databaseInterface == null) {
+            throw new NullPointerException("databaseInterface can't be null");
+        }
+        databaseInterface.setDatabasePassword(dbPassword);
+    }
 }
