@@ -1,1 +1,1 @@
-include ':app', ':databaseinterface', ':DatabaseInterface', ':SQLiteDatabase', ':ORMLiteDatabase', ':RealmDatabase'
+include ':app', ':DatabaseInterface', ':SQLiteDatabase', ':ORMLiteDatabase', ':RealmDatabase'
