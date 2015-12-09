@@ -34,10 +34,10 @@ import java.util.List;
 /**
  * Created by vgaidarji on 8/14/15.
  */
-public class SQLiteDatabaseWithChiper extends SQLiteOpenHelper implements DatabaseInterface {
+public class SQLiteDatabaseWithCipher extends SQLiteOpenHelper implements DatabaseInterface {
 
-    private static SQLiteDatabaseWithChiper database;
-    private static final String DATABASE_NAME = "sqliteDB_withChiper";
+    private static SQLiteDatabaseWithCipher database;
+    private static final String DATABASE_NAME = "sqliteDB_withCipher";
     private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_USERS = "users";
@@ -51,14 +51,14 @@ public class SQLiteDatabaseWithChiper extends SQLiteOpenHelper implements Databa
 
     private String dbPassword = null;
 
-    public SQLiteDatabaseWithChiper(Context context) {
+    public SQLiteDatabaseWithCipher(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void open(Context context) {
         if (database == null) {
-            database = new SQLiteDatabaseWithChiper(context.getApplicationContext());
+            database = new SQLiteDatabaseWithCipher(context.getApplicationContext());
         }
         getWritableDatabase(dbPassword);
     }

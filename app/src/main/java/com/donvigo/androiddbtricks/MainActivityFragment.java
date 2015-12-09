@@ -35,7 +35,7 @@ import com.donvigo.databaseinterface.model.UserModel;
 import com.donvigo.ormlitedatabase.OrmLiteDatabase;
 import com.donvigo.realmdatabase.RealmDatabase;
 import com.donvigo.sqlitedatabase.SQLiteDatabaseImpl;
-import com.donvigo.sqlitedatabase.SQLiteDatabaseWithChiper;
+import com.donvigo.sqlitedatabase.SQLiteDatabaseWithCipher;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -62,7 +62,7 @@ public class MainActivityFragment extends Fragment {
     DatabaseInterface database;
 
     enum DatabaseName {
-        SQLite, OrmLite, Realm, SQLiteWithChiper, RealmEncrypted
+        SQLite, OrmLite, Realm, SQLiteWithCipher, RealmEncrypted
     }
 
     public MainActivityFragment() {
@@ -92,8 +92,8 @@ public class MainActivityFragment extends Fragment {
             case R.id.action_realm:
                 changeDatabase(DatabaseName.Realm);
                 return true;
-            case R.id.action_sqlite_with_chiper:
-                changeDatabase(DatabaseName.SQLiteWithChiper);
+            case R.id.action_sqlite_with_cipher:
+                changeDatabase(DatabaseName.SQLiteWithCipher);
                 return true;
             case R.id.action_realm_encrypted:
                 changeDatabase(DatabaseName.RealmEncrypted);
@@ -136,10 +136,10 @@ public class MainActivityFragment extends Fragment {
                 database = new RealmDatabase();
                 database.setDatabasePassword(null);
                 break;
-            case SQLiteWithChiper:
+            case SQLiteWithCipher:
                 // This must be called before any call the SQLCipher classes (only one call)
                 SQLiteDatabase.loadLibs(getActivity());
-                database = new SQLiteDatabaseWithChiper(getActivity());
+                database = new SQLiteDatabaseWithCipher(getActivity());
                 database.setDatabasePassword(editTextDBPassword.getText().toString());
                 break;
             case RealmEncrypted:

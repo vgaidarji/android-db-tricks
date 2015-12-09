@@ -14,8 +14,8 @@
             android:title="@string/action_realm"
             android:orderInCategory="100"
             app:showAsAction="never"/>
-      <item android:id="@+id/action_sqlite_with_chiper"
-            android:title="@string/action_sqlite_with_chiper"
+      <item android:id="@+id/action_sqlite_with_cipher"
+            android:title="@string/action_sqlite_with_cipher"
             android:orderInCategory="100"
             app:showAsAction="never"/>
       <item android:id="@+id/action_realm_encrypted"

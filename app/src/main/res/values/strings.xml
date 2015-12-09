@@ -5,7 +5,7 @@
     <string name="action_sqlite">SQLite</string>
     <string name="action_ormlite">OrmlLite</string>
     <string name="action_realm">Realm</string>
-    <string name="action_sqlite_with_chiper">SQLite (with Chiper)</string>
+    <string name="action_sqlite_with_cipher">SQLite (with Cipher)</string>
     <string name="action_realm_encrypted">Realm (encrypted)</string>
     <string name="db_password">DB password</string>
     <string name="default_password">s^uag9Vr./3JqK6;</string>
